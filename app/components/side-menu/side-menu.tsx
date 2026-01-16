@@ -5,9 +5,16 @@ import { Label, ListBox } from "@heroui/react";
 import { CalendarRange, CircleCheck, Sun, CalendarIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function SideMenu() {
 	const router = useRouter();
+
+	useEffect(() => {
+		router.prefetch("/today");
+		router.prefetch("/weekly");
+		router.prefetch("/monthly");
+	}, [router]);
 
 	return (
 		<div className="side-menu side-menu-color h-screen">
