@@ -1,14 +1,22 @@
 "use client";
 
 import "./side-menu.css";
-import { Label, ListBox } from "@heroui/react";
-import { CalendarRange, CircleCheck, Sun, CalendarIcon } from "lucide-react";
+import { Label, ListBox, Button, useOverlayState } from "@heroui/react";
+import {
+	CalendarRange,
+	CircleCheck,
+	Sun,
+	CalendarIcon,
+	Plus,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Task from "../task/task.component";
 
 export default function SideMenu() {
 	const router = useRouter();
+	const taskState = useOverlayState({ defaultOpen: false });
 
 	useEffect(() => {
 		router.prefetch("/today");
@@ -18,18 +26,18 @@ export default function SideMenu() {
 
 	return (
 		<div className="side-menu side-menu-color h-screen">
-			<div className="py-5">
+			<div className="py-5 px-5 flex h-full flex-col">
 				<Link
 					href="/"
-					className="ms-5 flex flex-row items-center mb-5 gap-3"
+					className="flex flex-row items-center mb-5 gap-3 ps-1"
 				>
-					<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+					<div className="flex h-10 w-10 items-center justify-center rounded-field bg-primary">
 						<CircleCheck className="text-white" />
 					</div>
 					<div className="text-xl font-semibold">Focus</div>
 				</Link>
 				<ListBox
-					className="px-4"
+					className="ps-0"
 					onAction={(key) => {
 						router.push("/" + key);
 					}}
@@ -50,6 +58,16 @@ export default function SideMenu() {
 						</Label>
 					</ListBox.Item>
 				</ListBox>
+				<Button
+					className="bg-primary w-full mt-auto rounded-field"
+					onClick={() => taskState.open()}
+				>
+					<Plus /> Add Task
+				</Button>
+				<Task
+					isOpen={taskState.isOpen}
+					onOpenChange={taskState.setOpen}
+				/>
 			</div>
 		</div>
 	);
